@@ -124,7 +124,7 @@ func main()  {
 		}
 		count += 1
 		log.Printf("Success! 1 GB added, Total added := %v GB\n", count)
-		time.Sleep(time.Second*7)
+		time.Sleep(time.Second*10)
 	}
 
 }
