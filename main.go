@@ -79,7 +79,7 @@ func getTimestamp(t time.Time) string {
 	return timestamp
 }
 
-func doRequest() interface{} {
+func doRequest() (*http.Response, error) {
 	tempWarpID := generateString(22, false)
 	cfurI := fmt.Sprintf("https://api.cloudflareclient.com/v0a%v/reg", generateString(3, true))
 	warpBody := WarpBody{
@@ -93,33 +93,38 @@ func doRequest() interface{} {
 		Locale:      "es_ES",
 	}
 	jsondata, err:= json.Marshal(warpBody)
-	fmt.Println(string(jsondata))
 	if err != nil {
 		log.Println(err)
-		return err
+		return nil, err
 	}
 	jsonRaw := bytes.NewReader(jsondata)
 	r, err := http.NewRequest(http.MethodPost,cfurI, jsonRaw)
 	if err != nil {
 		log.Println(err)
-		return err
+		return nil, err
 	}
 	r.Header = warpHeaders
 	client := &http.Client{Transport: DefaultTransport}
 	res, err := client.Do(r)
 	if err != nil {
 		log.Println(err)
-		return err
+		return nil, err
 	}
 	defer res.Body.Close()
-	fmt.Println(res.StatusCode)
-	return err
+	return res, nil
 }
 
 func main()  {
+	count := 0
 	for{
-		doRequest()
-		time.Sleep(time.Second*4)
+		info, err := doRequest()
+		if err != nil {
+			log.Println("Error occurred while making the request, Response Code := \nretrying...\n", info.StatusCode)
+			continue
+		}
+		count += 1
+		log.Printf("Success! 1 GB added, Total added := %v GB\n", count)
+		time.Sleep(time.Second*7)
 	}
 
 }
