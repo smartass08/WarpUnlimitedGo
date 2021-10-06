@@ -119,12 +119,16 @@ func main()  {
 	for{
 		info, err := doRequest()
 		if err != nil {
-			log.Println("Error occurred while making the request, Response Code := \nretrying...\n", info.StatusCode)
+			log.Println("Error occurred while making the request")
 			continue
 		}
 		count += 1
-		log.Printf("Success! 1 GB added, Total added := %v GB\n", count)
-		time.Sleep(time.Second*10)
-	}
+		if info.StatusCode == 200{
+			log.Printf("Success! 1 GB added, Total added := %v GB\n", count)
+		} else {
+			log.Println("Error occurred while making the request, Response Code := \nretrying...\n", info.StatusCode)
+		}
 
+		time.Sleep(time.Second*7)
+	}
 }
