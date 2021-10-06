@@ -122,8 +122,8 @@ func main()  {
 			log.Println("Error occurred while making the request")
 			continue
 		}
-		count += 1
 		if info.StatusCode == 200{
+			count += 1
 			log.Printf("Success! 1 GB added, Total added := %v GB\n", count)
 		} else {
 			log.Printf("Error occurred while making the request, Response Code := %v\nretrying...\n", info.StatusCode)
