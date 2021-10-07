@@ -4,7 +4,8 @@ FROM golang:alpine
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
-    GOARCH=arm64
+    GOARCH=arm64 \
+    TZ=Asia/Kolkata
 
 # Move to working directory /build
 WORKDIR /build
